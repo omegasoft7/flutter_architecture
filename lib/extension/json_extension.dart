@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:architecture/extension/utils.dart';
 
 extension MapJsonExtension on Map<String, Object?>? {
   T getValueOr<T>({
@@ -11,10 +11,12 @@ extension MapJsonExtension on Map<String, Object?>? {
           return double.parse(this?[name]?.toString() ?? "0.0") as T;
         }
         return this?[name] as T;
-      } catch (e) {
-        debugPrint(
-            "error -> type is: ${T.toString()} name:$name, value:${this?[name]} defaultValue:$defaultValue");
-        debugPrint(e.toString());
+      } catch (e, stackTrace) {
+        Utils.printStackError(
+            message:
+                "error -> type is: ${T.toString()} name:$name, value:${this?[name]} defaultValue:$defaultValue",
+            error: e,
+            stackTrace: stackTrace);
         return defaultValue;
       }
     } else {
