@@ -6,33 +6,50 @@ extension MapJsonExtension on Map<String, Object?>? {
     required T defaultValue,
   }) {
     if (this?.containsKey(name) == true) {
+      return _getValueOr(this?[name], defaultValue);
+    } else {
+      return defaultValue;
+    }
+  }
+
+  List<T> getListValueOr<T>({
+    required String name,
+    required T defaultValue,
+    required List<T> defaultListValue,
+  }) {
+    if (this?.containsKey(name) == true) {
       try {
-        if (T == double) {
-          return double.parse(this?[name]?.toString() ?? "0.0") as T;
-        }
-        return this?[name] as T;
+        return (this?[name] as List)
+            .map((item) => _getValueOr<T>(item, defaultValue))
+            .toList();
       } catch (e, stackTrace) {
         Utils.printStackError(
             message:
                 "error -> type is: ${T.toString()} name:$name, value:${this?[name]} defaultValue:$defaultValue",
             error: e,
             stackTrace: stackTrace);
-        return defaultValue;
+        return defaultListValue;
       }
     } else {
-      return defaultValue;
+      return defaultListValue;
     }
   }
+}
 
-  List<T> getValuesOr<T>({
-    required String name,
-    required List<T> defaultValue,
-  }) {
-    if (this?.containsKey(name) == true) {
-      // debugPrint("getValueOr value:${this?[name]}");
-      return (this?[name] as List<dynamic>).map((e) => e as T).toList();
-    } else {
-      return defaultValue;
+T _getValueOr<T>(Object? object, defaultValue) {
+  try {
+    if (T == double) {
+      return double.parse(object?.toString() ?? "0.0") as T;
+    } else if (T == List) {
+      throw Exception("to fetch a list, use getListValueOr");
     }
+    return object as T;
+  } catch (e, stackTrace) {
+    Utils.printStackError(
+        message:
+            "error -> type is: ${T.toString()} value:$object defaultValue:$defaultValue",
+        error: e,
+        stackTrace: stackTrace);
+    return defaultValue;
   }
 }

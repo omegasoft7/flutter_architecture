@@ -3,7 +3,7 @@ description: An Architectural solution for Flutter
 repository: https://github.com/omegasoft7/flutter_architecture
 homepage: https://github.com/omegasoft7/flutter_architecture
 
-version: 0.0.7
+version: 0.0.8
 
 environment:
   sdk: '>=2.18.2 <3.0.0'
