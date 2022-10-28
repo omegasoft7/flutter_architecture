@@ -16,4 +16,18 @@ void main() {
 
     expect(list, <String>["1", "2", "3"]);
   });
+
+  testWidgets(
+      'json extension when getValueOr for big number should convert as expected',
+      (tester) async {
+    Map<String, Object> json = {
+      "amount": 4511.45,
+    };
+    final double amount = json.getValueOr(
+      name: 'amount',
+      defaultValue: 0.0,
+    );
+
+    expect(amount, 4511.45);
+  });
 }

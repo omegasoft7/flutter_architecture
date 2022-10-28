@@ -5,7 +5,7 @@ extension MapJsonExtension on Map<String, Object?>? {
     required String name,
     required T defaultValue,
   }) {
-    if (this?.containsKey(name) == true) {
+    if (this?.containsKey(name) == true && this?[name] != null) {
       return _getValueOr(this?[name], defaultValue);
     } else {
       return defaultValue;
@@ -17,7 +17,7 @@ extension MapJsonExtension on Map<String, Object?>? {
     required T defaultValue,
     required List<T> defaultListValue,
   }) {
-    if (this?.containsKey(name) == true) {
+    if (this?.containsKey(name) == true && this?[name] != null) {
       try {
         return (this?[name] as List)
             .map((item) => _getValueOr<T>(item, defaultValue))
